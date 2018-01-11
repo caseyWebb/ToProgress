@@ -1,14 +1,6 @@
-# ToProgress
+# @caseywebb/toprogress
 
-[![NPM version](https://img.shields.io/npm/v/toprogress.svg?style=flat-square)](https://www.npmjs.com/package/toprogress)
-[![npm](https://img.shields.io/npm/dt/toprogress.svg)](https://www.npmjs.com/package/toprogress)
-[![npm](https://img.shields.io/npm/l/toprogress.svg)](https://www.npmjs.com/package/toprogress)
-
-A lightweight (2.2 KB), no-dependency top progress bar library.
-
-# Demo
-
-http://djyde.github.io/ToProgress
+Forked from [djyde/ToProgress](https://github.com/djyde/ToProgress). See [CHANGELOG.md](./CHANGELOG.md).
 
 # Screenshot
 
@@ -19,13 +11,16 @@ http://djyde.github.io/ToProgress
 ![mobile](http://ww2.sinaimg.cn/large/62580dd9gw1et41eqm2usg20f00qo7if.gif)
 
 # Quick Start
+```bash
+$ yarn add @caseywebb/toprogress
+```
+
 ```JS
-var options = {
+const topbar = new ToProgress({
   color: '#EEE',
   duration: 0.2,
   height: '2px'
-}
-var topbar = new ToProgress(options);
+})
 ```
 
 # Support
@@ -34,11 +29,6 @@ var topbar = new ToProgress(options);
 * Chrome
 * Firefox
 * Safari
-
-# Use cases
-
-If you are using ToProgress.js in production, just tell us.
-
 
 # API
 

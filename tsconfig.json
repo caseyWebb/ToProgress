@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "importHelpers": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ]
+  },
+  "exclude": [
+    "dist"
+  ]
+}
