@@ -11,11 +11,11 @@
 
 [mit-shield]: https://img.shields.io/npm/l/toprogress2.svg
 
-[travis-ci]: https://travis-ci.org/Profiscience/toprogress2/
-[travis-ci-shield]: https://img.shields.io/travis/Profiscience/toprogress2/master.svg
+[travis-ci]: https://travis-ci.org/caseyWebb/toprogress2/
+[travis-ci-shield]: https://img.shields.io/travis/caseyWebb/toprogress2/master.svg
 
-[codecov]: https://codecov.io/gh/Profiscience/toprogress2
-[codecov-shield]: https://img.shields.io/codecov/c/github/Profiscience/toprogress2.svg
+[codecov]: https://codecov.io/gh/caseyWebb/toprogress2
+[codecov-shield]: https://img.shields.io/codecov/c/github/caseyWebb/toprogress2.svg
 
 [npm-stats]: http://npm-stat.com/charts.html?package=toprogress2&author=&from=&to=
 [npm-stats-shield]: https://img.shields.io/npm/dt/toprogress2.svg?maxAge=2592000
