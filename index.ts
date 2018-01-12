@@ -45,18 +45,25 @@ export class ToProgress {
     this.createProgressBar()
   }
 
-  private _progress = 0
-  private get progress(): number {
-    return this._progress
-  }
-  private set progress(v: number) {
-    this.progressBar.style.width = v + '%'
-    this._progress = v
+  private progress = 0
+
+  public getProgress() {
+    return this.progress
   }
 
-  public reset(callback?: () => void) {
-    this.progress = 0
-    if (callback) callback()
+  public setProgress(progress: number) {
+    this.progress = Math.min(100, Math.max(0, progress))
+    this.show()
+    this.progressBar.style.width = this.progress + '%'
+    return this.transitionEnd()
+  }
+
+  public increase(i: number) {
+    return this.setProgress(this.progress + i)
+  }
+
+  public decrease(i: number) {
+    return this.setProgress(this.progress - i)
   }
 
   public hide() {
@@ -67,38 +74,14 @@ export class ToProgress {
     this.progressBar.style.opacity = '1'
   }
 
-  public getProgress() {
-    return this.progress
-  }
-
-  public setProgress(progress: number, callback?: () => void) {
-    this.show()
-    if (progress > 100) {
-      this.progress = 100
-    } else if (progress < 0) {
-      this.progress = 0
-    } else {
-      this.progress = progress
-    }
-    if (callback) callback()
-  }
-
-  public increase(i: number, callback?: () => void) {
-    this.setProgress(this.progress + i, callback)
-  }
-
-  public decrease(i: number, callback?: () => void) {
-    this.setProgress(this.progress - i, callback)
-  }
-
-  public finish(callback?: () => void) {
-    this.setProgress(100)
+  public finish() {
     this.hide()
-    const onTransitionEnd = () => {
-      this.reset(callback)
-      this.progressBar.removeEventListener(transitionEvent, onTransitionEnd)
-    }
-    this.progressBar.addEventListener(transitionEvent, onTransitionEnd)
+    return this.setProgress(100).then(() => this.reset())
+  }
+
+  public reset() {
+    this.setProgress(0)
+    this.hide()
   }
 
   private setCSS() {
@@ -133,5 +116,15 @@ export class ToProgress {
     } else {
       document.body.appendChild(this.progressBar)
     }
+  }
+
+  private transitionEnd(): Promise<void> {
+    return new Promise((resolve) => {
+      const onTransitionEnd = () => {
+        resolve()
+        this.progressBar.removeEventListener(transitionEvent, onTransitionEnd)
+      }
+      this.progressBar.addEventListener(transitionEvent, onTransitionEnd)
+    })
   }
 }

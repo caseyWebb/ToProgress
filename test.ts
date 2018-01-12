@@ -30,7 +30,7 @@ describe('options', () => {
       const container = document.createElement('div')
       container.id = 'container'
       document.body.appendChild(container)
-    
+
       const bar = new ToProgress({ selector: '#container' })
       expect(container.firstChild).toEqual(document.getElementById('toprogress'))
     })
@@ -39,9 +39,9 @@ describe('options', () => {
       container.id = 'container'
       container.appendChild(document.createElement('div'))
       document.body.appendChild(container)
-      
+
       const bar = new ToProgress({ selector: '#container' })
-      
+
       expect(container.firstChild).toEqual(document.getElementById('toprogress'))
     })
     test('sets position using relative positioning', () => {
@@ -133,21 +133,22 @@ describe('initialization', () => {
 })
 
 describe('api', () => {
-  describe('.setProgress(n, [callback])', () => {
-    test('sets the width to n%', () => {
+  describe('.setProgress()', () => {
+    test('sets the width', () => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
       bar.setProgress(50)
       expect(el.style.width).toBe('50%')
     })
 
-    test('accepts a callback', (done) => {
+    test('returns a promise that resolves after transitionEnd', (done) => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
-      bar.setProgress(10, () => {
+      bar.setProgress(10).then(() => {
         expect(el.style.width).toBe('10%')
         done()
       })
+      el.dispatchEvent(new Event('transitionend'))
     })
 
     test('sets width to 100% when n > 100', () => {
@@ -207,14 +208,19 @@ describe('api', () => {
       bar.reset()
       expect(bar.getProgress()).toBe(0)
     })
-  
-    test('accepts a callback', (done) => {
+
+    test('calls .hide()', () => {
       const bar = new ToProgress()
-      bar.setProgress(50)
-      bar.reset(() => {
-        expect(bar.getProgress()).toBe(0)
-        done()
-      })
+      bar.hide = jest.fn()
+      bar.reset()
+      expect(bar.hide).toBeCalled()
+    })
+
+    test('returns a promise that resolves after transitionEnd', (done) => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.finish().then(done)
+      el.dispatchEvent(new Event('transitionend'))
     })
   })
 
@@ -229,19 +235,21 @@ describe('api', () => {
       const bar = new ToProgress()
       bar.hide = jest.fn()
       bar.finish()
-      expect(bar.hide).toBeCalled()  
+      expect(bar.hide).toBeCalled()
     })
-  
-    test('calls .reset() after transitionEnd', () => {
+
+    test('calls .reset() after transitionEnd', (done) => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
       bar.reset = jest.fn()
       bar.finish()
       el.dispatchEvent(new Event('transitionend'))
-      expect(bar.reset).toBeCalled()
+      process.nextTick(() => {
+        expect(bar.reset).toBeCalled()
+        done()
+      })
     })
   })
-
 
   describe('.start()', () => {
 
