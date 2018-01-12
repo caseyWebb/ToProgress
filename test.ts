@@ -20,6 +20,11 @@ describe('options.selector', () => {
     const bar = new ToProgress()
     expect(document.body.firstChild).toEqual(document.getElementById('toprogress'))
   })
+  test('throws if element with selector does not exist', () => {
+    expect(() => {
+      const bar = new ToProgress({ selector: 'dne' })
+    }).toThrow()
+  })
   test('inserts progress bar as first child of empty element', () => {
     const container = document.createElement('div')
     container.id = 'container'

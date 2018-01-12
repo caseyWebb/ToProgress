@@ -122,6 +122,9 @@ export class ToProgress {
   private createProgressBar() {
     if (this.options.selector) {
       const el = document.querySelector(this.options.selector)
+      if (!el) {
+        throw new Error(`[toprogress2] Element not found with selector ${this.options.selector}`)
+      }
       if (el.hasChildNodes()) {
         el.insertBefore(this.progressBar, el.firstChild)
       } else {
