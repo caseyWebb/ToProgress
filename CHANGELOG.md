@@ -1,5 +1,10 @@
 # Unreleased
 
+### Added
+- `.start()` method
+- `.stop()` method
+- `.destroy()` method
+
 ### Changed
 - [BREAKING] Replaced all callback functions with promises
 

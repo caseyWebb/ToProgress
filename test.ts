@@ -1,5 +1,12 @@
 import { ToProgress } from './index'
 
+function emitTransitionEndEvent(style: string) {
+  const e: any = new Event('transitionend')
+  const el = document.getElementById('toprogress')
+  e.propertyName = style
+  el.dispatchEvent(e)
+}
+
 beforeEach(() => {
   document.body.innerHTML = ''
 })
@@ -95,9 +102,14 @@ describe('options', () => {
       expect(el.style.transition).toContain('width 5s')
     })
     test('opacity duration is 3 x duration', () => {
+      const bar = new ToProgress({ duration: .1 })
+      const el = document.getElementById('toprogress')
+      expect(el.style.transition).toContain(`opacity ${.1 * 3}s`)
+    })
+    test('max opacity duration is 1 second', () => {
       const bar = new ToProgress({ duration: 5 })
       const el = document.getElementById('toprogress')
-      expect(el.style.transition).toContain('opacity 15s')
+      expect(el.style.transition).toContain('opacity 1s')
     })
   })
 
@@ -133,6 +145,63 @@ describe('initialization', () => {
 })
 
 describe('api', () => {
+  describe('.start()', () => {
+    test('uses default 30s duration and cubic-beizer', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.start()
+      expect(el.style.transition).toContain('width 30s cubic-bezier')
+    })
+
+    test('can set duration', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.start(10)
+      expect(el.style.transition).toContain('width 10s cubic-bezier')
+    })
+
+    test('can set easing', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.start(10, 'linear')
+      expect(el.style.transition).toContain('width 10s linear')
+    })
+
+    test('sets the width to 99', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.start()
+      expect(el.style.width).toBe('99%')
+    })
+
+    test('calling repeatedly re-triggers css transition', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.start()
+      expect(el.style.width).toBe('99%')
+      bar.start()
+      expect(el.style.width).toBe('98%')
+      bar.start()
+      expect(el.style.width).toBe('99%')
+    })
+  })
+
+  describe('.stop()', () => {
+    test('sets the transition duration to a big number', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.stop()
+      expect(el.style.transition).toContain('100000')
+    })
+
+    test('re-triggers the animation', () => {
+      const bar = new ToProgress()
+      bar.start()
+      bar.stop()
+      expect(bar.getProgress()).not.toBe(99)
+    })
+  })
+
   describe('.setProgress()', () => {
     test('sets the width', () => {
       const bar = new ToProgress()
@@ -148,7 +217,7 @@ describe('api', () => {
         expect(el.style.width).toBe('10%')
         done()
       })
-      el.dispatchEvent(new Event('transitionend'))
+      emitTransitionEndEvent('width')
     })
 
     test('sets width to 100% when n > 100', () => {
@@ -161,14 +230,6 @@ describe('api', () => {
       const bar = new ToProgress()
       bar.setProgress(-1)
       expect(bar.getProgress()).toBe(0)
-    })
-
-    test('calls .show()', () => {
-      const bar = new ToProgress()
-      const el = document.getElementById('toprogress')
-      bar.show = jest.fn()
-      bar.setProgress(10)
-      expect(bar.show).toBeCalled()
     })
   })
 
@@ -209,18 +270,28 @@ describe('api', () => {
       expect(bar.getProgress()).toBe(0)
     })
 
-    test('calls .hide()', () => {
+    test('sets the transition duration and easing to default', () => {
       const bar = new ToProgress()
-      bar.hide = jest.fn()
+      const el = document.getElementById('toprogress')
       bar.reset()
-      expect(bar.hide).toBeCalled()
+      expect(el.style.transition).toContain('width 0.2s ease-out')
+    })
+
+    test('calls .show()', (done) => {
+      const bar = new ToProgress()
+      bar.show = jest.fn()
+      bar.reset().then(() => {
+        expect(bar.show).toBeCalled()
+        done()
+      })
+      emitTransitionEndEvent('width')
     })
 
     test('returns a promise that resolves after transitionEnd', (done) => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
       bar.reset().then(done)
-      el.dispatchEvent(new Event('transitionend'))
+      emitTransitionEndEvent('width')
     })
   })
 
@@ -231,6 +302,13 @@ describe('api', () => {
       expect(bar.getProgress()).toBe(100)
     })
 
+    test('sets the transition duration and easing to default', () => {
+      const bar = new ToProgress()
+      const el = document.getElementById('toprogress')
+      bar.finish()
+      expect(el.style.transition).toContain('width 0.2s ease-out')
+    })
+
     test('calls .hide()', () => {
       const bar = new ToProgress()
       bar.hide = jest.fn()
@@ -238,12 +316,12 @@ describe('api', () => {
       expect(bar.hide).toBeCalled()
     })
 
-    test('calls .reset() after transitionEnd', (done) => {
+    test('calls .reset() after opacity transition completes', (done) => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
       bar.reset = jest.fn()
       bar.finish()
-      el.dispatchEvent(new Event('transitionend'))
+      emitTransitionEndEvent('opacity')
       process.nextTick(() => {
         expect(bar.reset).toBeCalled()
         done()
