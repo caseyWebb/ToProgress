@@ -1,4 +1,4 @@
-# topgrogress2
+# toprogress2
 
 [![Version][npm-version-shield]][npm]
 ![License][mit-shield]
