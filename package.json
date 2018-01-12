@@ -22,6 +22,9 @@
     "progressbar"
   ],
   "author": "Randy Lu <randypriv@gmail.com>",
+  "contributors": [
+    "Casey Webb <notcaseywebb@gmail.com>"
+  ],
   "license": "MIT",
   "repository": "caseyWebb/ToProgress",
   "bugs": "https://github.com/caseyWebb/ToProgress/issues",
