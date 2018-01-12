@@ -80,8 +80,8 @@ export class ToProgress {
   }
 
   public reset() {
-    this.setProgress(0)
     this.hide()
+    return this.setProgress(0)
   }
 
   private setCSS() {
