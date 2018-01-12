@@ -10,12 +10,15 @@
   ],
   "scripts": {
     "build": "yarn run build:es && yarn run build:umd",
+    "build:demo": "parcel build --out-dir demo/dist --public-url https://caseyWebb.github.io/toprogress2 demo/index.html",
     "build:es": "tsc --declaration --module es2015 --outDir dist/es",
     "build:umd": "tsc --module umd --outDir dist/umd",
     "lint": "tslint -p ./",
-    "prepush": "yarn lint",
+    "prepush": "yarn lint && yarn update:demo",
     "prepublishOnly": "yarn test && yarn build",
-    "test": "jest"
+    "start:demo": "parcel demo/index.html",
+    "test": "jest",
+    "update:demo": "yarn build:demo && git add -f demo/dist && (git commit -m \"chore(demo)\" || true)"
   },
   "keywords": [
     "topbar",
@@ -34,6 +37,7 @@
     "@types/jest": "^22.0.1",
     "husky": "^0.14.3",
     "jest": "^22.0.6",
+    "parcel-bundler": "^1.4.1",
     "ts-jest": "^22.0.1",
     "tslint": "^5.9.1",
     "typescript": "^2.6.2"
