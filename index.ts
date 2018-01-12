@@ -21,6 +21,7 @@ export type ToProgressOptions = {
   height?: string
   duration?: number
   position?: string
+  selector?: string
 }
 
 export class ToProgress {
@@ -30,16 +31,17 @@ export class ToProgress {
     height: '2px',
     duration: 0.2,
     opacityDuration: 0.6,
-    position: 'top'
+    position: 'top',
+    selector: undefined as undefined | string
   }
   private progressBar = document.createElement('div')
 
-  constructor(opts: ToProgressOptions = {}, selector?: string) {
+  constructor(opts: ToProgressOptions = {}) {
     Object.assign(this.options, opts)
     this.options.opacityDuration = this.options.duration * 3
     this.progressBar.id = this.options.id
-    this.setCSS(selector)
-    this.createProgressBar(selector)
+    this.setCSS()
+    this.createProgressBar()
   }
 
   private _progress = 0
@@ -89,20 +91,18 @@ export class ToProgress {
   }
 
   public finish(callback?: () => void) {
-    this.setProgress(100, callback)
+    this.setProgress(100)
     this.hide()
-    if (transitionEvent) {
-      const onTransitionEnd = () => {
-        this.reset()
-        this.progressBar.removeEventListener(transitionEvent, onTransitionEnd)
-      }
-      this.progressBar.addEventListener(transitionEvent, onTransitionEnd)
+    const onTransitionEnd = () => {
+      this.reset(callback)
+      this.progressBar.removeEventListener(transitionEvent, onTransitionEnd)
     }
+    this.progressBar.addEventListener(transitionEvent, onTransitionEnd)
   }
 
-  private setCSS(selector?: string) {
+  private setCSS() {
     const styles: { [k: string]: string } = {
-      'position': selector ? 'relative' : 'fixed',
+      'position': this.options.selector ? 'relative' : 'fixed',
       'top': this.options.position === 'top' ? '0' : 'auto' ,
       'bottom': this.options.position === 'bottom' ? '0' : 'auto' ,
       'left': '0',
@@ -117,15 +117,13 @@ export class ToProgress {
     Object.keys(styles).forEach((style: string) => (this.progressBar.style as any)[style] = styles[style])
   }
 
-  private createProgressBar(selector?: string) {
-    if (selector) {
-      const el = document.querySelector(selector)
-      if (el) {
-        if (el.hasChildNodes()) {
-          el.insertBefore(this.progressBar, el.firstChild)
-        } else {
-          el.appendChild(this.progressBar)
-        }
+  private createProgressBar() {
+    if (this.options.selector) {
+      const el = document.querySelector(this.options.selector)
+      if (el.hasChildNodes()) {
+        el.insertBefore(this.progressBar, el.firstChild)
+      } else {
+        el.appendChild(this.progressBar)
       }
     } else {
       document.body.appendChild(this.progressBar)
