@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint -p ./",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "topbar",
@@ -23,9 +23,27 @@
   "bugs": "https://github.com/caseyWebb/ToProgress/issues",
   "homepage": "https://github.com/caseyWebb/ToProgress#readme",
   "devDependencies": {
+    "@types/jest": "^22.0.1",
+    "jest": "^22.0.6",
+    "ts-jest": "^22.0.1",
     "typescript": "^2.6.2"
   },
-  "dependencies": {
-    "tslib": "^1.8.1"
+  "jest": {
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "testRegex": ".*test\\.ts?$",
+    "transform": {
+      "^.+\\.[tj]sx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    }
   }
 }
