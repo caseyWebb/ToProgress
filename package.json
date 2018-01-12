@@ -1,5 +1,5 @@
 {
-  "name": "@caseywebb/toprogress",
+  "name": "toprogress2",
   "version": "1.0.0",
   "description": "A lightweight, no-dependency top progress bar library",
   "main": "dist/umd/index.js",

@@ -1,4 +1,4 @@
-# @caseywebb/toprogress
+# topgrogress2
 
 Forked from [djyde/ToProgress](https://github.com/djyde/ToProgress). See [CHANGELOG.md](./CHANGELOG.md).
 
@@ -12,10 +12,12 @@ Forked from [djyde/ToProgress](https://github.com/djyde/ToProgress). See [CHANGE
 
 # Quick Start
 ```bash
-$ yarn add @caseywebb/toprogress
+$ yarn add toprogress2
 ```
 
 ```JS
+import { ToProgress } from 'toprogress2'
+
 const topbar = new ToProgress({
   color: '#EEE',
   duration: 0.2,
