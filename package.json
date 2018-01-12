@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "yarn run build:es && yarn run build:umd",
-    "build:demo": "parcel build --out-dir docs/demo --public-url https://caseyWebb.github.io/toprogress2/demo demo/index.html",
+    "build:demo": "parcel build --out-dir docs/demo --public-url toprogress2/demo demo/index.html",
     "build:es": "tsc --declaration --module es2015 --outDir dist/es",
     "build:umd": "tsc --module umd --outDir dist/umd",
     "lint": "tslint -p ./",
