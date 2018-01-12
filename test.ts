@@ -219,7 +219,7 @@ describe('api', () => {
     test('returns a promise that resolves after transitionEnd', (done) => {
       const bar = new ToProgress()
       const el = document.getElementById('toprogress')
-      bar.finish().then(done)
+      bar.reset().then(done)
       el.dispatchEvent(new Event('transitionend'))
     })
   })
