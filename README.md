@@ -33,9 +33,12 @@ $ yarn add toprogress2
 import { ToProgress } from 'toprogress2'
 
 const topbar = new ToProgress({
-  color: '#EEE',
+  id: 'toprogress',
+  color: '#F44336',
+  height: '2px',
   duration: 0.2,
-  height: '2px'
+  position: 'top',
+  selector: 'body'
 })
 
 topbar.start()

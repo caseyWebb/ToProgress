@@ -51,14 +51,14 @@ describe('options', () => {
 
       expect(container.firstChild).toEqual(document.getElementById('toprogress'))
     })
-    test('sets position using relative positioning', () => {
+    test('sets position using absolute positioning', () => {
       const container = document.createElement('div')
       container.id = 'container'
       container.appendChild(document.createElement('div'))
       document.body.appendChild(container)
       const bar = new ToProgress({ selector: '#container' })
       const el = document.getElementById('toprogress')
-      expect(el.style.position).toBe('relative')
+      expect(el.style.position).toBe('absolute')
       expect(el.style.top).toBe('0px')
       expect(el.style.bottom).toBeFalsy()
     })

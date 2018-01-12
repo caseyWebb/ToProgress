@@ -16,12 +16,37 @@ function whichTransitionEvent() {
 
 const transitionEvent = whichTransitionEvent()
 
-export type ToProgressOptions = {
+// tslint:disable-next-line interface-name
+export interface ToProgressOptions {
+  /**
+   * id attribute to assign progress bar element
+   * @default `'toprogress'`
+   */
   id?: string
+  /**
+   * Progress bar color
+   * @default `'#F44336'`
+   */
   color?: string
+  /**
+   * Progress bar height
+   * @default `'2px'`
+   */
   height?: string
+  /**
+   * CSS transition duration for `.finish()`, `.setProgress()`, `.increase()`, `.decrease()`, and `.reset()`
+   * @default `'0.2s'`
+   */
   duration?: number
+  /**
+   * Progress bar position. `top` or `bottom`
+   * @default `'top'`
+   */
   position?: string
+  /**
+   * Selector of progress bar container
+   * @default `'body'`
+   */
   selector?: string
 }
 
@@ -32,29 +57,43 @@ export class ToProgress {
     height: '2px',
     duration: 0.2,
     position: 'top',
-    selector: undefined as undefined | string
+    selector: 'body'
   }
   private element = document.createElement('div')
   private progress = 0
 
-  constructor(opts: ToProgressOptions = {}) {
-    Object.assign(this.options, opts)
+  constructor(opts?: ToProgressOptions) {
+    Object.assign(this.options, opts || {})
     this.element.id = this.options.id
     this.setCSS()
     this.setTransition(this.options.duration)
     this.createProgressBar()
   }
 
+  /**
+   * Note, because .start() uses a single CSS transition, this will not
+   * accurately reflect the position on the screen
+   * @returns Current progress
+   */
   public getProgress() {
     return this.progress
   }
 
+  /**
+   * @param progress 0-100
+   * @returns Promise which resolves after transition animation completes
+   */
   public setProgress(progress: number) {
     this.progress = Math.min(100, Math.max(0, progress))
     this.element.style.width = this.progress + '%'
     return this.transitionEnd('width')
   }
 
+  /**
+   * @param duration Max amount of time to animate. Larger values = slower moving bar.
+   * @param easing CSS transition easing
+   * @returns Promise which resolves after timeout or `.finish()`
+   */
   public start(duration: number = 30, easing = 'cubic-bezier(0.05, 0.45, 0.05, 0.95)') {
     this.show()
     this.setTransition(duration, easing)
@@ -70,10 +109,18 @@ export class ToProgress {
     this.setProgress(this.progress - 1).catch(() => { /* noop */})
   }
 
+  /**
+   * @param i Amount to increment progress
+   * @returns Promise which resolves after animation completes
+   */
   public increase(i: number) {
     return this.setProgress(this.progress + i)
   }
 
+  /**
+   * @param i Amount to decrement progress
+   * @returns Promise which resolves after animation completes
+   */
   public decrease(i: number) {
     return this.setProgress(this.progress - i)
   }
@@ -86,6 +133,11 @@ export class ToProgress {
     this.element.style.opacity = '1'
   }
 
+  /**
+   * Transition to 100%, hide, and reset
+   *
+   * @returns Promise which resolves after progress bar has been reset
+   */
   public finish() {
     this.setTransition(this.options.duration)
     this.setProgress(100).catch(() => { /* noop */ })
@@ -93,6 +145,11 @@ export class ToProgress {
     return this.transitionEnd('opacity').then(() => this.reset())
   }
 
+  /**
+   * Set progress to 0 and show after transition completes
+   *
+   * @returns Promise which resolves after progress bar has been reset
+   */
   public reset() {
     this.setTransition(this.options.duration)
     return this.setProgress(0).then(() => this.show())
@@ -104,7 +161,7 @@ export class ToProgress {
 
   private setCSS() {
     const styles: { [k: string]: string } = {
-      'position': this.options.selector ? 'relative' : 'fixed',
+      'position': this.options.selector === 'body' ? 'fixed' : 'absolute',
       'top': this.options.position === 'top' ? '0' : 'auto' ,
       'bottom': this.options.position === 'bottom' ? '0' : 'auto' ,
       'left': '0',
@@ -130,18 +187,14 @@ export class ToProgress {
   }
 
   private createProgressBar() {
-    if (this.options.selector) {
-      const el = document.querySelector(this.options.selector)
-      if (!el) {
-        throw new Error(`[toprogress2] Element not found with selector ${this.options.selector}`)
-      }
-      if (el.hasChildNodes()) {
-        el.insertBefore(this.element, el.firstChild)
-      } else {
-        el.appendChild(this.element)
-      }
+    const el = document.querySelector(this.options.selector)
+    if (!el) {
+      throw new Error(`[toprogress2] Element not found with selector ${this.options.selector}`)
+    }
+    if (el.hasChildNodes()) {
+      el.insertBefore(this.element, el.firstChild)
     } else {
-      document.body.appendChild(this.element)
+      el.appendChild(this.element)
     }
   }
 
