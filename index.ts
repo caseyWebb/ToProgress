@@ -1,16 +1,17 @@
 function whichTransitionEvent() {
   const el = document.createElement('fakeelement')
   const transitions: { [k: string]: string } = {
-    transition      : 'transitionend',
     OTransition     : 'oTransitionEnd',
-    MozTransition   : 'transitionend',
     WebkitTransition: 'webkitTransitionEnd'
   }
   for (const t in transitions) {
+    /* istanbul ignore next */
     if ((el.style as any)[t] !== undefined) {
+      /* istanbul ignore next */
       return transitions[t]
     }
   }
+  return 'transitionend'
 }
 
 const transitionEvent = whichTransitionEvent()
