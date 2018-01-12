@@ -35,12 +35,12 @@ export class ToProgress {
     position: 'top',
     selector: undefined as undefined | string
   }
-  private progressBar = document.createElement('div')
+  private element = document.createElement('div')
 
   constructor(opts: ToProgressOptions = {}) {
     Object.assign(this.options, opts)
     this.options.opacityDuration = this.options.duration * 3
-    this.progressBar.id = this.options.id
+    this.element.id = this.options.id
     this.setCSS()
     this.createProgressBar()
   }
@@ -54,7 +54,7 @@ export class ToProgress {
   public setProgress(progress: number) {
     this.progress = Math.min(100, Math.max(0, progress))
     this.show()
-    this.progressBar.style.width = this.progress + '%'
+    this.element.style.width = this.progress + '%'
     return this.transitionEnd()
   }
 
@@ -67,11 +67,11 @@ export class ToProgress {
   }
 
   public hide() {
-    this.progressBar.style.opacity = '0'
+    this.element.style.opacity = '0'
   }
 
   public show() {
-    this.progressBar.style.opacity = '1'
+    this.element.style.opacity = '1'
   }
 
   public finish() {
@@ -82,6 +82,10 @@ export class ToProgress {
   public reset() {
     this.hide()
     return this.setProgress(0)
+  }
+
+  public destroy() {
+    this.element.remove()
   }
 
   private setCSS() {
@@ -99,7 +103,7 @@ export class ToProgress {
       '-moz-transition': 'width ' + this.options.duration + 's' + ', opacity ' + this.options.opacityDuration + 's',
       '-webkit-transition': 'width ' + this.options.duration + 's' + ', opacity ' + this.options.opacityDuration + 's'
     }
-    Object.keys(styles).forEach((style: string) => (this.progressBar.style as any)[style] = styles[style])
+    Object.keys(styles).forEach((style: string) => (this.element.style as any)[style] = styles[style])
   }
 
   private createProgressBar() {
@@ -109,12 +113,12 @@ export class ToProgress {
         throw new Error(`[toprogress2] Element not found with selector ${this.options.selector}`)
       }
       if (el.hasChildNodes()) {
-        el.insertBefore(this.progressBar, el.firstChild)
+        el.insertBefore(this.element, el.firstChild)
       } else {
-        el.appendChild(this.progressBar)
+        el.appendChild(this.element)
       }
     } else {
-      document.body.appendChild(this.progressBar)
+      document.body.appendChild(this.element)
     }
   }
 
@@ -122,9 +126,9 @@ export class ToProgress {
     return new Promise((resolve) => {
       const onTransitionEnd = () => {
         resolve()
-        this.progressBar.removeEventListener(transitionEvent, onTransitionEnd)
+        this.element.removeEventListener(transitionEvent, onTransitionEnd)
       }
-      this.progressBar.addEventListener(transitionEvent, onTransitionEnd)
+      this.element.addEventListener(transitionEvent, onTransitionEnd)
     })
   }
 }

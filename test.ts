@@ -251,7 +251,11 @@ describe('api', () => {
     })
   })
 
-  describe('.start()', () => {
-
+  describe('.destroy()', () => {
+    test('removes the element from the DOM', () => {
+      const bar = new ToProgress()
+      bar.destroy()
+      expect(document.getElementById('toprogress')).toBeFalsy()
+    })
   })
 })
