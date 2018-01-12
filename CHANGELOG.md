@@ -1,3 +1,9 @@
+# Unreleased
+
+### Changed
+- [BREAKING] Replaced all callback functions with promises
+
+
 # 1.0.0
 
 ### Added
