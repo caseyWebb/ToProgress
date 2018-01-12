@@ -10,15 +10,17 @@
   ],
   "scripts": {
     "build": "yarn run build:es && yarn run build:umd",
-    "build:demo": "parcel build --out-dir docs/demo --public-url toprogress2/demo demo/index.html",
     "build:es": "tsc --declaration --module es2015 --outDir dist/es",
     "build:umd": "tsc --module umd --outDir dist/umd",
+    "build:docs": "typedoc --disableOutputCheck --mode file --theme minimal --out docs --excludePrivate --excludeNotExported index.ts",
+    "build:demo": "parcel build --out-dir docs/demo --public-url /toprogress2/demo demo/index.html",
+    "build:pages": "yarn build:docs && yarn build:demo",
     "lint": "tslint -p ./",
     "prepush": "yarn lint",
-    "prepublishOnly": "yarn test && yarn build && yarn update:demo",
+    "prepublishOnly": "yarn test && yarn build && yarn update:pages",
     "start:demo": "parcel demo/index.html",
     "test": "jest",
-    "update:demo": "yarn build:demo && git add -f docs/demo && (git commit -m \"chore(demo)\" || true)"
+    "update:pages": "yarn build:pages && git add -f docs && (git commit -m \"chore(gh-pages)\" || true)"
   },
   "keywords": [
     "topbar",
@@ -40,6 +42,7 @@
     "parcel-bundler": "^1.4.1",
     "ts-jest": "^22.0.1",
     "tslint": "^5.9.1",
+    "typedoc": "^0.9.0",
     "typescript": "^2.6.2"
   },
   "jest": {
