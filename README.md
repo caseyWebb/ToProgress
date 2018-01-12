@@ -1,5 +1,25 @@
 # topgrogress2
 
+[![Version][npm-version-shield]][npm]
+![License][mit-shield]
+[![Build Status][travis-ci-shield]][travis-ci]
+[![Coverage States][codecov-shield]][codecov]
+[![Downloads][npm-stats-shield]][npm-stats]
+
+[npm]: https://www.npmjs.com/package/toprogress2
+[npm-version-shield]: https://img.shields.io/npm/v/toprogress2.svg
+
+[mit-shield]: https://img.shields.io/npm/l/toprogress2.svg
+
+[travis-ci]: https://travis-ci.org/Profiscience/toprogress2/
+[travis-ci-shield]: https://img.shields.io/travis/Profiscience/toprogress2/master.svg
+
+[codecov]: https://codecov.io/gh/Profiscience/toprogress2
+[codecov-shield]: https://img.shields.io/codecov/c/github/Profiscience/toprogress2.svg
+
+[npm-stats]: http://npm-stat.com/charts.html?package=toprogress2&author=&from=&to=
+[npm-stats-shield]: https://img.shields.io/npm/dt/toprogress2.svg?maxAge=2592000
+
 Forked from [djyde/ToProgress](https://github.com/djyde/ToProgress). See [CHANGELOG.md](./CHANGELOG.md).
 
 # Screenshot
