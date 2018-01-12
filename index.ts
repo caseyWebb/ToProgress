@@ -62,12 +62,12 @@ export class ToProgress {
      * Need to ensure that if already started the width is changed so
      * that the new transition takes effect.
      */
-    this.setProgress(this.progress === 99 ? 98 : 99)
+    return this.setProgress(this.progress === 99 ? 98 : 99)
   }
 
   public stop() {
     this.setTransition(10e10)
-    this.setProgress(this.progress - 1)
+    this.setProgress(this.progress - 1).catch(() => { /* noop */})
   }
 
   public increase(i: number) {
@@ -88,7 +88,7 @@ export class ToProgress {
 
   public finish() {
     this.setTransition(this.options.duration)
-    this.setProgress(100)
+    this.setProgress(100).catch(() => { /* noop */ })
     this.hide()
     return this.transitionEnd('opacity').then(() => this.reset())
   }
