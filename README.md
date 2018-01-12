@@ -22,7 +22,7 @@
 
 Forked from [djyde/ToProgress](https://github.com/djyde/ToProgress). See [CHANGELOG.md](./CHANGELOG.md).
 
-![](https://caseyWebb.github.io/toprogress2/demo/screenshot.gif)
+![](https://caseyWebb.github.io/toprogress2/screenshot.gif)
 
 # Quick Start
 ```bash
