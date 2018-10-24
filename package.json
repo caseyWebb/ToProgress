@@ -12,10 +12,12 @@
     "build:docs": "typedoc --disableOutputCheck --mode file --theme minimal --out docs --excludePrivate --excludeNotExported index.ts",
     "build:demo": "parcel build --out-dir docs/demo --public-url /toprogress2/demo demo/index.html",
     "lint": "tsc --noEmit && tslint -p ./",
-    "prepush": "yarn lint",
     "prepublishOnly": "yarn test && yarn build",
     "start:demo": "parcel demo/index.html",
     "test": "jest"
+  },
+  "husky": {
+    "prepush": "yarn lint"
   },
   "keywords": [
     "topbar",
@@ -35,7 +37,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.7",
-    "husky": "^0.14.3",
+    "husky": "^1.1.2",
     "jest": "^23.6.0",
     "parcel-bundler": "^1.4.1",
     "ts-jest": "^23.10.4",
