@@ -5,16 +5,14 @@
     "rootDir": "./",
     "importHelpers": true,
     "strict": true,
-    "noImplicitAny": true,
-    "alwaysStrict": true,
+    "esModuleInterop": true,
     "lib": [
       "dom",
       "es2015"
     ]
   },
   "exclude": [
-    "test.ts",
-    "demo",
-    "dist"
+    "dist",
+    "node_modules"
   ]
 }
