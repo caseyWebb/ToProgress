@@ -1,11 +1,27 @@
 language: node_js
 node_js:
 - stable
+env:
+  global:
+    secure: C5Kdhyk1Xixwkpta9cgClEAMTQre0EPf2K40/xbTquevqNJUL7BdPu4KswMj/F1aPBvXxFBQRSvnIzUp2Tv6APm+PB5koMN4/PcSr8B1VloObwrrh2Y8wa3b/s1CPk4RjgSFLBNTHGFu7ngJzYX1P7wifjWITeeymB/5KkEdL3OZTJzestTOIaVclFPKw834gEGorm1tKR5/mjTO+qQxHi6lzWMtsBrldnb09lBPMiC/3oVZyz8Qy1RD+SxwDuNA2kR8XYckBSpaHhAad/HWtSn8IFuvpCSHemy6FhUMfNbjLcU3y2rM6oVntKf3wxhAfskFgW2hjIGyiD7ZhA0y4UVlQ0N3qvXNMqW9c5TplwnFG5vzOJUBECta+xRqBPHNGqCSfHhOt4JF/t3hgazBkMXcI8uJ2ZZ/azhNUoZVqtlS9k4BorlOAphdC0wdDKKsXYC0iY7wA106pZ6hNVWCMCjPTWnddjUAvDwWfgoe8UK81A5vvcUd6bCYl6gIkmLcYFZk04RLgjKIThGhbKBJbA0ngGzvqCPJmO0ZQPxiKItvYcr7QalOuKO31vJfTot28GADKNKcBevcEIWosQ8WwFFa+S8C2IngDynhxfdg9kewNN3+6yh26ci1sXm2+gtz64ganBeBvev67Kb67eGuwUKO9kWq3oYggJlss37UpXY=
 cache:
   yarn: true
   directories:
   - node_modules
-after_script:
+script:
+- yarn lint
+- yarn test
+after_success:
 - npx codecov
+before_deploy:
+- yarn build:demo
+- yarn build:docs
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  local-dir: ./docs
+  on:
+    branch: master
 notifications:
   email: false

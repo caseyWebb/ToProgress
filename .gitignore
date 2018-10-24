@@ -3,5 +3,6 @@
 
 .cache/
 coverage/
+docs/
 dist/
 node_modules/

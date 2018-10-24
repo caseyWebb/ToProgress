@@ -5,22 +5,17 @@
   "main": "dist/umd/index.js",
   "module": "dist/es/index.js",
   "typings": "dist/es/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "yarn run build:es && yarn run build:umd",
-    "build:es": "tsc --declaration --module es2015 --outDir dist/es",
+    "build:es": "tsc --declaration --declarationMap --module es2015 --outDir dist/es",
     "build:umd": "tsc --module umd --outDir dist/umd",
     "build:docs": "typedoc --disableOutputCheck --mode file --theme minimal --out docs --excludePrivate --excludeNotExported index.ts",
     "build:demo": "parcel build --out-dir docs/demo --public-url /toprogress2/demo demo/index.html",
-    "build:pages": "yarn build:docs && yarn build:demo",
-    "lint": "tslint -p ./",
+    "lint": "tsc --noEmit && tslint -p ./",
     "prepush": "yarn lint",
-    "prepublishOnly": "yarn test && yarn build && yarn update:pages",
+    "prepublishOnly": "yarn test && yarn build",
     "start:demo": "parcel demo/index.html",
-    "test": "jest",
-    "update:pages": "yarn build:pages && git add -f docs && (git commit -m \"chore(gh-pages)\" || true)"
+    "test": "jest"
   },
   "keywords": [
     "topbar",
